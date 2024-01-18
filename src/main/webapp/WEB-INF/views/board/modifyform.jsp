@@ -34,6 +34,10 @@
 								<textarea id="content" name="content">${boardVo.content}</textarea>
 							</td>
 						</tr>
+						 <tr>
+						 	<td class="label">첨부파일</td>
+						 	<td><input type="file" name="fileinput" multiple="multiple"></td>
+						 </tr>
 					</table>
 				
 					<div class="bottom">
