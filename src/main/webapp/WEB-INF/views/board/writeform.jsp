@@ -32,7 +32,8 @@
 								<textarea id="content" name="content"></textarea>
 							</td>
 						</tr>
-						 
+						 <tr>
+						 </tr>
 					</table>
 					<div class="bottom">
 						<a href="/mysite/board">취소</a>
