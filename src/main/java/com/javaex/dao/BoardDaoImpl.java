@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.javaex.vo.BoardVo;
 
+//2024년 01월 19일 작성자 : 노신영
 public class BoardDaoImpl implements BoardDao {
   private Connection getConnection() throws SQLException {
     Connection conn = null;
@@ -24,7 +25,6 @@ public class BoardDaoImpl implements BoardDao {
   }
   
 	public List<BoardVo> getList() {
-
 		// 0. import java.sql.*;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -55,6 +55,62 @@ public class BoardDaoImpl implements BoardDao {
 				BoardVo vo = new BoardVo(no, title, hit, regDate, userNo, userName);
 				list.add(vo);
 			}
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// 5. 자원정리
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		return list;
+	}
+
+	public List<BoardVo> getList(int start, int end) {
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardVo> list = new ArrayList<BoardVo>();
+		
+		try {
+			conn = getConnection();
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "SELECT NO, title, hit, regdate, uno, name \n"
+					+ "FROM ( SELECT no, title, hit, regdate, uno, name, rownum AS rnum\n"
+					+ "	   FROM (SELECT b.NO AS no, b.title AS title, b.hit AS hit, to_char(b.reg_date,'YY-MM-DD HH:MM') AS regdate, b.user_no AS uno, u.name AS name\n"
+					+ "	   		 FROM BOARD b, USERS u \n"
+					+ "	   		 WHERE b.USER_no = u.NO)\n"
+					+ "	   WHERE rownum <= ? \n"
+					+ "	   )\n"
+					+ "WHERE ? <= rnum ";
+			
+			//바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, end);
+			pstmt.setInt(2, start);
+			
+			rs = pstmt.executeQuery();
+			// 4.결과처리
+			while (rs.next()) {
+				int no = rs.getInt("no");
+				String title = rs.getString("title");
+				int hit = rs.getInt("hit");
+				String regDate = rs.getString("regdate");
+				int userNo = rs.getInt("uno");
+				String userName = rs.getString("name");
+				
+				BoardVo vo = new BoardVo(no, title, hit, regDate, userNo, userName);
+				list.add(vo);
+			}
 			
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
@@ -70,13 +126,67 @@ public class BoardDaoImpl implements BoardDao {
 			} catch (SQLException e) {
 				System.out.println("error:" + e);
 			}
-
 		}
-		
 		return list;
-
 	}
+	
+	public List<BoardVo> getList(String keyField, String keyWord, int start, int end) {
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardVo> list = new ArrayList<BoardVo>();
 
+		try {
+			conn = getConnection();
+			
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "SELECT NO, title, hit, regdate, uno, name \n"
+					+ "FROM ( SELECT no, title, hit, regdate, uno, name, rownum AS rnum\n"
+					+ "	   FROM (SELECT b.NO AS no, b.title AS title, b.hit AS hit, to_char(b.reg_date,'YY-MM-DD HH:MM') AS regdate, b.user_no AS uno, u.name AS name, b.content AS content\n"
+					+ "	   		 FROM BOARD b, USERS u \n"
+					+ "	   		 WHERE b.USER_no = u.NO)\n"
+					+ "	   WHERE " + keyField + " LIKE ? AND rownum <= ? \n"
+					+ "	   )\n"
+					+ "WHERE ? <= rnum ";
+					
+			//바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%" + keyWord + "%");
+			pstmt.setInt(2, end);
+			pstmt.setInt(3, start);
+			rs = pstmt.executeQuery();
+			
+			// 4.결과처리
+			while (rs.next()) {
+				int no = rs.getInt("no");
+				String title = rs.getString("title");
+				int hit = rs.getInt("hit");
+				String regDate = rs.getString("regdate");
+				int userNo = rs.getInt("uno");
+				String userName = rs.getString("name");
+				
+				BoardVo vo = new BoardVo(no, title, hit, regDate, userNo, userName);
+				list.add(vo);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// 5. 자원정리
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		return list;
+	}
 	
 	public BoardVo getBoard(int no) {
 

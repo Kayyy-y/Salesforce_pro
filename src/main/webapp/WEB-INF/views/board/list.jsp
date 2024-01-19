@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<%-- 2024년 01월 19일 작성자 : 노신영--%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,8 +17,14 @@
 		
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value="">
+				<form id="search_form" action="/mysite/board?a=search" method="post">
+					<select name="keyField">
+							<option value="name">글쓴이</option>
+							<option value="title">제 목</option>
+							<option value="content">내 용</option>
+							<option value="regdate">작성일</option>
+					</select> 
+					<input type="text" name="keyWord">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -29,7 +36,7 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>				
-					<c:forEach items="${list }" var="vo">
+					<c:forEach items="${list}" var="vo">
 						<tr>
 							<td>${vo.no }</td>
 							<td><a href="/mysite/board?a=read&no=${vo.no }"> ${vo.title } </a></td>
@@ -46,18 +53,15 @@
 				</table>
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li><a href="">2</a></li>
-						<li class="selected">3</li>
-						<li><a href="">4</a></li>
-						<li><a href="">5</a></li>
-						<li><a href="">6</a></li>
-						<li><a href="">7</a></li>
-						<li><a href="">8</a></li>
-						<li><a href="">9</a></li>
-						<li><a href="">10</a></li>
-						<li><a href="">▶</a></li>
+					<c:if test="${nowBlock > 1 }">
+						<li><a href="/mysite/board?a=list&nowBlock=${nowBlock-1}&nowPage=${(nowBlock-2)*10 + 1}">◀</a></li>
+					</c:if>
+					<c:forEach items="${pageNum }" var="pageNum">
+						<li><a href="/mysite/board?a=list&nowPage=${pageNum }">${pageNum }</a></li>
+					</c:forEach>		
+					<c:if test="${nowBlock < totalBlock}">
+						<li><a href="/mysite/board?a=list&nowBlock=${nowBlock+1}&nowPage=${nowBlock*10 + 1}">▶</a></li>
+					</c:if>
 					</ul>
 				</div>				
 				<c:if test="${authUser != null }">
