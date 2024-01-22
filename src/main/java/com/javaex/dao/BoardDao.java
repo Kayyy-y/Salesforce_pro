@@ -3,7 +3,7 @@ package com.javaex.dao;
 import java.util.List;
 import com.javaex.vo.BoardVo;
 
-//2024년 01월 19일 작성자 : 노신영
+//2024년 01월 19일 작성자 : 노신영 
 public interface BoardDao {
 	public List<BoardVo> getList();  // 게시물 전체 목록 조회
 	public List<BoardVo> getList(int start, int end);  // 게시물 선택 목록 조회

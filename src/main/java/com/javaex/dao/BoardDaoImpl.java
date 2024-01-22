@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.javaex.vo.BoardVo;
 
-//2024년 01월 19일 작성자 : 노신영
+//2024년 01월 19일 작성자 : 노신영 
 public class BoardDaoImpl implements BoardDao {
   private Connection getConnection() throws SQLException {
     Connection conn = null;

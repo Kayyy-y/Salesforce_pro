@@ -63,9 +63,7 @@ public class BoardServlet extends HttpServlet {
 			
 			start = (nowPage * numPerPage) - numPerPage + 1;
 			end = start + numPerPage - 1;
-			System.out.println("Start = " + start + " end = " + end);
-			System.out.println("totalBlock = " + totalBlock + " nowBlock = " + nowBlock);
-			
+
 			//페이징 처리 
 			int pageStart = (nowBlock - 1) * pagePerBlock + 1; //하단 페이지 시작번호
 			int pageEnd = ((pageStart + pagePerBlock) <= totalPage) ? (pageStart + pagePerBlock) : totalPage + 1; //하단 페이지 끝번호
