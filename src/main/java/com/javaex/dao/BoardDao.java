@@ -1,7 +1,6 @@
 package com.javaex.dao;
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import com.javaex.vo.BoardVo;
 
 public interface BoardDao {
