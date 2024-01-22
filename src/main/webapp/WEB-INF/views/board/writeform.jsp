@@ -8,6 +8,7 @@
 <link href="/mysite/assets/css/board.css" rel="stylesheet" type="text/css">
 <title>Mysite</title>
 </head>
+<!-- 2024년 01월 22일 작성자 : 이정언 -->
 <body>
 	<div id="container">
 		
@@ -23,8 +24,8 @@
 							<th colspan="2">글쓰기</th>
 						</tr>
 						<tr>
-							<td class="label">제목</td>
-							<td><input type="text" name="title" value=""></td>
+							<td class="label">제목 ${title_value}</td>
+							<td><input type="text" name="title"></td>
 						</tr>
 						<tr>
 							<td class="label">내용</td>
@@ -35,7 +36,8 @@
 						 <tr>
 						 	<td class="label">첨부파일</td>
 						 	<td>
-								<input type="file" name="fileinput" multiple="multiple">
+								<input type="file" name="fileinput" multiple>
+								<p class="notice">파일은 최대 2개까지 업로드 가능합니다!</p>
 							</td>
 						 </tr>
 					</table>

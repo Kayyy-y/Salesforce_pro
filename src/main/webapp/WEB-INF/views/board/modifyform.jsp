@@ -37,7 +37,8 @@
 						<tr>
 							<td class="label">첨부파일</td>
 							<td>
-								<input type="file" name="fileinput" multiple="multiple">
+								<p>${boardVo.filename1}</p>							</p>
+								<p>${boardVo.filename2}</p>
 							</td>
 						</tr>
 					</table>
