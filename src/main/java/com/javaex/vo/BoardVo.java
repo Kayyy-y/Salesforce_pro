@@ -11,6 +11,9 @@ public class BoardVo {
 	private String userName;
 
 	public BoardVo() {
+		this.title = title;
+		this.content = content;
+		this.userName = userName;
 	}
 	
 	public BoardVo(int no, String title, String content) {
