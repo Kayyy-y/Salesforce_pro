@@ -3,12 +3,16 @@ package com.javaex.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+<<<<<<< HEAD
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+=======
+import java.util.ArrayList;
+>>>>>>> refs/remotes/origin/main
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +38,7 @@ import com.javaex.vo.BoardVo;
 import com.javaex.vo.UserVo;
 
 @WebServlet("/board")
+//2024년 01월 19일 작성자 : 노신영
 public class BoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final int maxFilecnt = 2;
@@ -42,6 +47,7 @@ public class BoardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+<<<<<<< HEAD
 		String attachPath = getServletContext().getRealPath("/attaches/");
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		String actionName = "";
@@ -50,7 +56,125 @@ public class BoardServlet extends HttpServlet {
 			//요청 구분
 			actionName = request.getParameter("a");
 			System.out.println("board:" + actionName);
+=======
+		String actionName = request.getParameter("a");
+		System.out.println("board:" + actionName);
+
+		if ("list".equals(actionName)) {
+			// 리스트 가져오기
+			BoardDao dao = new BoardDaoImpl();
+			List<BoardVo> list1 = dao.getList();
+	
+			//페이징 필수 변수 선언하기 
+			int totalRecord = 0; //전체레코드수
+			int numPerPage = 10; // 페이지당 레코드 수 
+			int pagePerBlock = 10; //블럭당 페이지수 
+
+			int totalPage = 0; //전체 페이지 수
+			int totalBlock = 0; //전체 블럭수 
+
+			int nowPage = 1; // 현재페이지
+			int nowBlock = 1; //현재블럭
+
+			int start = 0; //디비의 select 시작번호
+			int end = 0; //시작번호로 부터 가져올 select 갯수
+
+			totalRecord = list1.size(); 
+			totalPage = (int) Math.ceil((double) totalRecord / numPerPage); //전체페이지수 
+			nowBlock = (int) Math.ceil((double) nowPage / pagePerBlock); //현재블럭 계산
+			totalBlock = (int) Math.ceil((double) totalPage / pagePerBlock); //전체블럭계산
 			
+			if (request.getParameter("nowBlock") != null) {
+				nowBlock = Integer.parseInt(request.getParameter("nowBlock"));
+			}
+			
+			if (request.getParameter("nowPage") != null) {
+				nowPage = Integer.parseInt(request.getParameter("nowPage"));
+			}
+			
+			start = (nowPage * numPerPage) - numPerPage + 1;
+			end = start + numPerPage - 1;
+
+			//페이징 처리 
+			int pageStart = (nowBlock - 1) * pagePerBlock + 1; //하단 페이지 시작번호
+			int pageEnd = ((pageStart + pagePerBlock) <= totalPage) ? (pageStart + pagePerBlock) : totalPage + 1; //하단 페이지 끝번호
+			List<Integer> pageNum = new ArrayList<Integer>(); 
+			
+			  for (; pageStart < pageEnd; pageStart++) {
+				 pageNum.add(pageStart);				 
+			 }
+
+			// 리스트 화면에 보내기
+			List<BoardVo> list = dao.getList(start, end);
+			request.setAttribute("list", list);
+			request.setAttribute("pageNum", pageNum);
+			request.setAttribute("nowBlock", nowBlock);
+			request.setAttribute("totalBlock", totalBlock);
+				
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/list.jsp");
+			rd.forward(request, response); 
+		} 
+		
+		else if ("search".equals(actionName)) {
+			// 리스트 가져오기
+			BoardDao dao = new BoardDaoImpl();
+			List<BoardVo> list = dao.getList();
+			
+			//페이징 필수 변수 선언하기 
+			int totalRecord = 0; //전체레코드수
+			int numPerPage = 10; // 페이지당 레코드 수 
+			int pagePerBlock = 10; //블럭당 페이지수 
+
+			int totalPage = 0; //전체 페이지 수
+			int totalBlock = 0; //전체 블럭수 
+
+			int nowPage = 1; // 현재페이지
+			int nowBlock = 1; //현재블럭
+
+			int start = 0; //디비의 select 시작번호
+			int end = 0; //시작번호로 부터 가져올 select 갯수
+
+			int listSize = list.size(); //현재 읽어온 게시물의 수
+			
+			String keyField = request.getParameter("keyField");
+			String keyWord = request.getParameter("keyWord");
+			
+			List<BoardVo> list1 = dao.getList(keyField, keyWord, start, listSize);
+			
+			totalRecord = list1.size();
+			totalPage = (int) Math.ceil((double) totalRecord / numPerPage); //전체페이지수 
+			nowBlock = (int) Math.ceil((double) nowPage / pagePerBlock); //현재블럭 계산
+			totalBlock = (int) Math.ceil((double) totalPage / pagePerBlock); //전체블럭계산
+			
+			if (request.getParameter("nowBlock") != null) {
+				nowBlock = Integer.parseInt(request.getParameter("nowBlock"));
+			}
+			
+			if (request.getParameter("nowPage") != null) {
+				nowPage = Integer.parseInt(request.getParameter("nowPage"));
+			}
+			
+			start = (nowPage * numPerPage) - numPerPage + 1;
+			end = start + numPerPage - 1;
+			
+			//페이징 처리 
+			int pageStart = (nowBlock - 1) * pagePerBlock + 1; //하단 페이지 시작번호
+			int pageEnd = ((pageStart + pagePerBlock) <= totalPage) ? (pageStart + pagePerBlock) : totalPage + 1; //하단 페이지 끝번호
+			List<Integer> pageNum = new ArrayList<Integer>(); 
+						
+			for (; pageStart < pageEnd; pageStart++) {
+				 pageNum.add(pageStart);				 
+			 }
+
+			// 리스트 화면에 보내기
+			List<BoardVo> list2 = dao.getList(keyField, keyWord, start, end);
+			request.setAttribute("list", list2);
+			request.setAttribute("pageNum", pageNum);
+			request.setAttribute("nowBlock", nowBlock);
+			request.setAttribute("totalBlock", totalBlock);
+>>>>>>> refs/remotes/origin/main
+			
+<<<<<<< HEAD
 			//case 처리
 			//2024년 01월 22일 작성자 : 노신영(작성), 이정언(수정 및 확인)
 			if ("list".equals(actionName)) {
@@ -66,6 +190,17 @@ public class BoardServlet extends HttpServlet {
 				int totalRecord = 0; //전체레코드수
 				int numPerPage = 10; // 페이지당 레코드 수 
 				int pagePerBlock = 10; //블럭당 페이지수 
+=======
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/list.jsp");
+			rd.forward(request, response); 
+		} 
+		
+		else if ("read".equals(actionName)) {
+			// 게시물 가져오기
+			int no = Integer.parseInt(request.getParameter("no"));
+			BoardDao dao = new BoardDaoImpl();
+			BoardVo boardVo = dao.getBoard(no);
+>>>>>>> refs/remotes/origin/main
 
 				int totalPage = 0; //전체 페이지 수
 				int totalBlock = 0; //전체 블럭수 

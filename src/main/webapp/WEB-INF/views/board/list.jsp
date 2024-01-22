@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<%-- 2024년 01월 19일 작성자 : 노신영--%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +19,7 @@
 		
 		<div id="content">
 			<div id="board">
+<<<<<<< HEAD
 				<form id="search_form" action="/mysite/board?a=list" method="post">
 					<select name="keyfield">
 							<option value="name">글쓴이</option>
@@ -26,6 +28,16 @@
 							<option value="reg_date">작성일</option>
 					</select> 
 					<input type="text" name="keyword">
+=======
+				<form id="search_form" action="/mysite/board?a=search" method="post">
+					<select name="keyField">
+							<option value="name">글쓴이</option>
+							<option value="title">제 목</option>
+							<option value="content">내 용</option>
+							<option value="regdate">작성일</option>
+					</select> 
+					<input type="text" name="keyWord">
+>>>>>>> refs/remotes/origin/main
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -37,7 +49,7 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>				
-					<c:forEach items="${list }" var="vo">
+					<c:forEach items="${list}" var="vo">
 						<tr>
 							<td>${vo.no }</td>
 							<td><a href="/mysite/board?a=read&no=${vo.no }"> ${vo.title } </a></td>

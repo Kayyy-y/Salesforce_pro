@@ -17,6 +17,9 @@ public class BoardVo {
 	private String filename2;
 	private long filesize2;
 	public BoardVo() {
+		this.title = title;
+		this.content = content;
+		this.userName = userName;
 	}
 	
 	public BoardVo(int no, String title, String content) {
