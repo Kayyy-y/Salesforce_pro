@@ -16,7 +16,7 @@
 		
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="/mysite/board">
+				<form class="board-form" method="post" action="/mysite/board" enctype="multipart/form-data">
 					<input type="hidden" name="a" value="modify" />
 					<input type="hidden" name="no" value="${boardVo.no}" />
 				
@@ -34,8 +34,13 @@
 								<textarea id="content" name="content">${boardVo.content}</textarea>
 							</td>
 						</tr>
+						<tr>
+							<td class="label">첨부파일</td>
+							<td>
+								<input type="file" name="fileinput" multiple="multiple">
+							</td>
+						</tr>
 					</table>
-				
 					<div class="bottom">
 						<a href="/mysite/board">취소</a>
 						<input type="submit" value="수정">
