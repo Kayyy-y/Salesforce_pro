@@ -94,13 +94,12 @@ public class BoardDaoImpl implements BoardDao {
 						+ "        WHERE b.user_no = u.NO "
 						+ "        ORDER BY b.no DESC "
 						+ "    ) A  "
-						+ "    WHERE ROWNUM <= ? + ? ) "
+						+ "    WHERE ROWNUM <= ? ) "
 						+ "WHERE RNUM >= ? ";
 			  
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, end);
-			pstmt.setInt(3, start);
+			pstmt.setInt(1, end);
+			pstmt.setInt(2, start);
 
 			} else {
 				
@@ -118,16 +117,15 @@ public class BoardDaoImpl implements BoardDao {
 							+ "				or filename1 like ? "
 							+ "				or filename2 like ? ) "
 							+ " 		order by b.no desc ) A " 
-							+ "WHERE ROWNUM <= ? + ? ) " 
+							+ "WHERE ROWNUM <= ? ) " 
 						+ "WHERE RNUM >= ? ";
 					
 					pstmt = conn.prepareStatement(query);
 					pstmt.setString(1, "%" + keyword + "%");
 					pstmt.setString(2, "%" + keyword + "%");
 					pstmt.setString(3, "%" + keyword + "%");
-					pstmt.setInt(4, start);
-					pstmt.setInt(5, end);
-					pstmt.setInt(6, start);
+					pstmt.setInt(4, end);
+					pstmt.setInt(5, start);
 				} else {
 					if("name".equals(keyfield)) {
 						keyfield = "u." + keyfield;
@@ -142,14 +140,13 @@ public class BoardDaoImpl implements BoardDao {
 							+ "        WHERE b.user_no = u.NO "
 							+ "				and "+ keyfield +  " like ? "
 							+ " 		order by b.no desc ) A " 
-							+ "WHERE ROWNUM <= ? + ? ) " 
+							+ "WHERE ROWNUM <= ? ) " 
 						+ "WHERE RNUM >= ? ";
 					
 					pstmt = conn.prepareStatement(query);
 					pstmt.setString(1, "%" + keyword + "%");
-					pstmt.setInt(2, start);
-					pstmt.setInt(3, end);
-					pstmt.setInt(4, start);
+					pstmt.setInt(2, end);
+					pstmt.setInt(3, start);
 				}
 			}
 			

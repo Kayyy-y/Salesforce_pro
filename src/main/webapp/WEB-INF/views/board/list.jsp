@@ -19,7 +19,7 @@
 		<div id="content">
 			<div id="board">
 				<form id="search_form" action="/mysite/board?a=list" method="post">
-					<select name="keyfield">
+					<select name="keyfield" v-model="keyfield">
 							<option value="name">글쓴이</option>
 							<option value="title">제 목</option>
 							<option value="content">내 용</option>
@@ -54,15 +54,15 @@
 				</table>
 				<div class="pager">
 					<ul>
-					<c:if test="${nowBlock > 1 }">
-						<li><a href="/mysite/board?a=list&nowBlock=${nowBlock-1}&nowPage=${(nowBlock-2)*10 + 1}">◀</a></li>
-					</c:if>
-					<c:forEach items="${pageNum }" var="pageNum">
-						<li><a href="/mysite/board?a=list&nowPage=${pageNum }">${pageNum }</a></li>
-					</c:forEach>		
-					<c:if test="${nowBlock < totalBlock}">
-						<li><a href="/mysite/board?a=list&nowBlock=${nowBlock+1}&nowPage=${nowBlock*10 + 1}">▶</a></li>
-					</c:if>
+						<c:if test="${nowBlock > 1 }">
+							<li><a href="/mysite/board?a=list&nowBlock=${nowBlock-1}&nowPage=${(nowBlock-2)*10 + 1}&keyfield=${keyfield}&keyword=${keyword}">◀</a></li>
+						</c:if>
+						<c:forEach items="${pageNum }" var="pageNum">
+							<li><a href="/mysite/board?a=list&nowPage=${pageNum}&keyfield=${keyfield}&keyword=${keyword}">${pageNum }</a></li>
+						</c:forEach>		
+						<c:if test="${nowBlock < totalBlock}">
+							<li><a href="/mysite/board?a=list&nowBlock=${nowBlock+1}&nowPage=${nowBlock*10 + 1}&keyfield=${keyfield}&keyword=${keyword}">▶</a></li>
+						</c:if>
 					</ul>
 				</div>						
 				<c:if test="${authUser != null }">

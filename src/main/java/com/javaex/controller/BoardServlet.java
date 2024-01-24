@@ -68,7 +68,7 @@ public class BoardServlet extends HttpServlet {
 				int nowBlock = 1; //현재블럭
 
 				int start = 0; //디비의 select 시작번호
-				int end = 0; //시작번호로 부터 가져올 select 갯수
+				int end = 10; //시작번호로 부터 가져올 select 갯수
 
 				totalRecord = dao.getTotalCount(keyfield, keyword);
 				totalPage = (int) Math.ceil((double) totalRecord / numPerPage); //전체페이지수 
@@ -101,6 +101,8 @@ public class BoardServlet extends HttpServlet {
 				request.setAttribute("pageNum", pageNum);
 				request.setAttribute("nowBlock", nowBlock);
 				request.setAttribute("totalBlock", totalBlock);
+				request.setAttribute("keyfield", keyfield);
+				request.setAttribute("keyword", keyword);
 					
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/list.jsp");
 				rd.forward(request, response); 
