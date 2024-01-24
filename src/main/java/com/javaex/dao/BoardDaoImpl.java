@@ -45,7 +45,7 @@ public class BoardDaoImpl implements BoardDao {
 				} else {
 					keyfield = "b." + keyfield;
 				}
-				query = query + "select count(*) from board b, users u where " + keyfield  + " like ?  or b.user_no = u.no";
+				query = query + "select count(*) from board b, users u where " + keyfield  + " like ?  and b.user_no = u.no";
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, "%" + keyword + "%");
 			}
